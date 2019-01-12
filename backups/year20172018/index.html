@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Nachbar</title>
+<style>
+body {
+    background-color: #d0e4fe;
+}
+ 
+h1 {
+    color: orange;
+    text-align: center;
+}
+ 
+p {
+	font: 30px Baskerville, "Palatino Linotype", Palatino, "Century Schoolbook L", "Times New Roman", serif;
+}
+.bn_dienst {
+	background-color: #CCC;
+	border-width: medium;
+	border-style: none;
+}
+</style>
+<script type="text/javascript">
+ 
+function getDateAsString(date) 
+{ 
+    var year = date.getFullYear(); 
+    var month = '0' + (date.getMonth() + 1); 
+    month = month.slice(-2, (month.length - 2) + 3); 
+    var day = '0' + date.getDate(); 
+    day = day.slice(-2, (day.length - 2) + 3); 
+    return day + '.' + month + '.' + year; 
+} 
+
+function gibWoche( d ) { 
+  // Create a copy of this date object  
+  var target  = new Date(d.valueOf());  
+  // ISO week date weeks start on monday  
+  // so correct the day number  
+  var dayNr   = (d.getDay() + 6) % 7;  
+  // Set the target to the thursday of this week so the  
+  // target date is in the right year  
+  target.setDate(target.getDate() - dayNr + 3);  
+  // ISO 8601 states that week 1 is the week  
+  // with january 4th in it  
+  var jan4    = new Date(target.getFullYear(), 0, 4);  
+  // Number of days between target date and january 4th  
+  var dayDiff = (target - jan4) / 86400000;    
+  // Calculate week number: Week 1 (january 4th) plus the  // number of weeks between target date and january 4th  
+  var weekNr = Math.ceil(dayDiff / 7);    
+
+  return weekNr;    
+}
+
+function convert_week2house(w){
+	var hn = "16A";
+	switch(w){
+		case 40:
+		case 44:
+		case 48:
+		case 52:
+		case 4:
+		case 8:
+		case 12:
+		    hn="16A"
+			break;
+			
+		case 41:
+		case 45:
+		case 49:
+		case 1:
+		case 5:
+		case 9:
+		case 13:
+		    hn="16B"
+			break;
+			
+		case 42:
+		case 46:
+		case 50:
+		case 2:
+		case 6:
+		case 10:
+		    hn="16C"
+			break;
+			
+		case 43:
+		case 47:
+		case 51:
+		case 3:
+		case 7:
+		case 11:
+		    hn="16"
+			break;
+			
+		default:
+		    hn=""
+		    break;
+	}
+	return hn;
+}
+ 
+function myFunction() {
+    //heute = "Heute: " + getDateAsString(Date());
+    var jetzt = new Date();
+    var heute = "Heute: " + getDateAsString(jetzt);
+	var dienst = heute + " " + ", Zum Dienst Haus-nr.: ";
+	dienst = dienst + convert_week2house(gibWoche(jetzt));
+    document.getElementById("demo").innerHTML = dienst;
+}
+</script>
+<style type="text/css">
+<!--
+.excel1 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:black;
+font-size:11.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Calibri, sans-serif;
+text-align:general;
+vertical-align:bottom;
+border:none;
+white-space:nowrap;
+}
+.excel29 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:black;
+font-size:14.0pt;
+font-weight:800;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+}
+.excel2 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:red;
+font-size:12.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:"Arial Narrow", sans-serif;
+text-align:general;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+}
+.excel16 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:14.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+}
+.excel17 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:12.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:"Comic Sans MS", cursive;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:none;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+}
+.font5 {
+color:#1F497D;
+font-size:12.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:"Comic Sans MS", cursive;
+}
+.excel4 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+}
+.excel5 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:.5pt solid windowtext;
+white-space:nowrap;
+}
+.excel6 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:.5pt solid windowtext;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+}
+.excel7 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+}
+.excel30 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+background:#C6E0B4;
+}
+.excel3 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:general;
+vertical-align:bottom;
+border:none;
+white-space:nowrap;
+}
+.excel11 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:.5pt solid windowtext;
+background:#F2DCDB;
+}
+.excel9 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+}
+.excel10 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+}
+.excel31 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+background:#C6E0B4;
+}
+.excel19 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:.5pt solid windowtext;
+border-right:.5pt solid windowtext;
+border-bottom:none;
+border-left:.5pt solid windowtext;
+}
+.excel22 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:12.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:.5pt solid windowtext;
+border-right:.5pt solid windowtext;
+border-bottom:none;
+border-left:.5pt solid windowtext;
+}
+.excel12 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:.5pt solid windowtext;
+background:#EBF1DE;
+}
+.excel13 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:.5pt solid windowtext;
+}
+.excel8 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:.5pt solid windowtext;
+background:#DCE6F1;
+}
+.excel25 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:.5pt solid black;
+border-right:.5pt solid windowtext;
+border-bottom:none;
+border-left:.5pt solid windowtext;
+background:silver;
+}
+.excel14 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:none;
+border-left:.5pt solid windowtext;
+background:#F2DCDB;
+}
+.excel15 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:.5pt solid windowtext;
+white-space:nowrap;
+background:#EBF1DE;
+}
+.excel27 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:.5pt solid black;
+border-right:.5pt solid windowtext;
+border-bottom:none;
+border-left:.5pt solid windowtext;
+}
+.excel28 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:12.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:.5pt solid black;
+border-right:.5pt solid windowtext;
+border-bottom:none;
+border-left:.5pt solid windowtext;
+}
+-->
+</style>
+<style type="text/css">
+<!--
+.excel18 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:black;
+font-size:11.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Calibri, sans-serif;
+text-align:general;
+vertical-align:bottom;
+border:none;
+white-space:nowrap;
+}
+.excel45 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:black;
+font-size:14.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+}
+.excel46 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:14.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+}
+.excel47 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:12.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:"Comic Sans MS", cursive;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:none;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+}
+.excel20 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:.5pt solid windowtext;
+white-space:nowrap;
+}
+.excel21 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:.5pt solid windowtext;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+}
+.excel23 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+}
+.excel34 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:.5pt solid windowtext;
+background:#EBF1DE;
+}
+.excel50 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+background:#E2EFDA;
+}
+.excel48 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:.5pt solid windowtext;
+border-right:.5pt solid windowtext;
+border-bottom:none;
+border-left:.5pt solid windowtext;
+}
+.excel49 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:12.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:.5pt solid windowtext;
+border-right:.5pt solid windowtext;
+border-bottom:none;
+border-left:.5pt solid windowtext;
+}
+.excel35 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:.5pt solid windowtext;
+}
+.excel26 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+}
+.excel32 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+}
+.excel24 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:.5pt solid windowtext;
+background:#DCE6F1;
+}
+.excel52 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+background:#DDEBF7;
+}
+.excel53 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:.5pt solid windowtext;
+background:#FCE4D6;
+}
+.excel51 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:none;
+background:#FCE4D6;
+}
+.excel38 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:none;
+border-left:.5pt solid windowtext;
+background:silver;
+}
+.excel54 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:none;
+border-left:.5pt solid windowtext;
+background:#FCE4D6;
+}
+.excel36 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:.5pt solid windowtext;
+white-space:nowrap;
+background:#EBF1DE;
+}
+.excel43 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:none;
+border-left:.5pt solid windowtext;
+}
+.excel37 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:.5pt solid black;
+border-right:.5pt solid windowtext;
+border-bottom:none;
+border-left:.5pt solid windowtext;
+background:silver;
+}
+.excel40 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:12.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:.5pt solid black;
+border-right:.5pt solid windowtext;
+border-bottom:none;
+border-left:.5pt solid windowtext;
+}
+.excel33 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:windowtext;
+font-size:10.0pt;
+font-weight:700;
+font-style:normal;
+text-decoration:none;
+font-family:Arial, sans-serif;
+text-align:center;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+border-top:none;
+border-right:.5pt solid windowtext;
+border-bottom:.5pt solid windowtext;
+border-left:.5pt solid windowtext;
+background:#F2DCDB;
+}
+-->
+</style>
+</head>
+<body>
+<h1>Nachbar</h1>
+<p id="demo">
+<input name="dienst" type="button" class="bn_dienst" id="bn_dienst" onClick="myFunction();" value="Nachbar Im Diest">
+</p>
+
+<table cellspacing="0" cellpadding="0" class="excel18">
+  <col width="64" span="2" style="width:48pt;">
+  <col width="84" span="7" style="width:63pt;">
+  <col width="64" span="2" style="width:48pt;">
+  <tr style="height:18.0pt;">
+    <td colspan="11" rowspan="2" class="excel45" width="844" style="height:33.0pt;width:633pt;">Schneedienst2017/2018</td>
+  </tr>
+  <tr style="height:15.0pt;"> </tr>
+  <tr style="height:18.0pt;">
+    <td colspan="11" class="excel46" style="height:18.0pt;">16: Nicole/Rene;    16A: Stefan; 16B: Wei/Nan; 16C: Yuenfeng/Bernd</td>
+  </tr>
+  <tr style="height:19.5pt;">
+    <td colspan="11" class="excel47" style="height:19.5pt;">Diese Liste wird    aktualisiert von Nan in Website <font class="font5">www.xiang-liang.de/nachbar</font></td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel20" style="height:15.0pt;border-top:none;">Haus-Nr.</td>
+    <td class="excel21" style="border-top:none;">Woche</td>
+    <td class="excel23">Mo</td>
+    <td class="excel23">Di</td>
+    <td class="excel23">Mi</td>
+    <td class="excel23">Do</td>
+    <td class="excel23">Fr</td>
+    <td class="excel23">Sa</td>
+    <td class="excel23">So</td>
+    <td class="excel23">Monat</td>
+    <td class="excel21" style="border-top:none;">Jahr</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel34" style="height:15.0pt;">16A</td>
+    <td class="excel34" style="border-left:none;">40</td>
+    <td class="excel50">02.10.2017</td>
+    <td class="excel50">03.10.2017</td>
+    <td class="excel50">04.10.2017</td>
+    <td class="excel50">05.10.2017</td>
+    <td class="excel50">06.10.2017</td>
+    <td class="excel50">07.10.2017</td>
+    <td class="excel50">08.10.2017</td>
+    <td rowspan="4" class="excel48" style="border-top:none;">Oktober</td>
+    <td rowspan="13" class="excel49" style="border-bottom:.5pt solid black;border-top:none;">2017</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel35" style="height:15.0pt;">16B</td>
+    <td class="excel26">41</td>
+    <td class="excel32">09.10.2017</td>
+    <td class="excel32">10.10.2017</td>
+    <td class="excel32">11.10.2017</td>
+    <td class="excel32">12.10.2017</td>
+    <td class="excel32">13.10.2017</td>
+    <td class="excel32">14.10.2017</td>
+    <td class="excel32">15.10.2017</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel24" style="height:15.0pt;">16C</td>
+    <td class="excel24" style="border-left:none;">42</td>
+    <td class="excel52">16.10.2017</td>
+    <td class="excel52">17.10.2017</td>
+    <td class="excel52">18.10.2017</td>
+    <td class="excel52">19.10.2017</td>
+    <td class="excel52">20.10.2017</td>
+    <td class="excel52">21.10.2017</td>
+    <td class="excel52">22.10.2017</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel53" style="height:15.0pt;">16</td>
+    <td class="excel53" style="border-left:none;">43</td>
+    <td class="excel51">23.10.2017</td>
+    <td class="excel51">24.10.2017</td>
+    <td class="excel51">25.10.2017</td>
+    <td class="excel51">26.10.2017</td>
+    <td class="excel51">27.10.2017</td>
+    <td class="excel51">28.10.2017</td>
+    <td class="excel51">29.10.2017</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel34" style="height:15.0pt;">16A</td>
+    <td class="excel34" style="border-left:none;">44</td>
+    <td class="excel50">30.10.2017</td>
+    <td class="excel50">31.10.2017</td>
+    <td class="excel50">01.11.2017</td>
+    <td class="excel50">02.11.2017</td>
+    <td class="excel50">03.11.2017</td>
+    <td class="excel50">04.11.2017</td>
+    <td class="excel50">05.11.2017</td>
+    <td rowspan="4" class="excel38">November</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel35" style="height:15.0pt;">16B</td>
+    <td class="excel26">45</td>
+    <td class="excel32">06.11.2017</td>
+    <td class="excel32">07.11.2017</td>
+    <td class="excel32">08.11.2017</td>
+    <td class="excel32">09.11.2017</td>
+    <td class="excel32">10.11.2017</td>
+    <td class="excel32">11.11.2017</td>
+    <td class="excel32">12.11.2017</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel24" style="height:15.0pt;">16C</td>
+    <td class="excel24" style="border-left:none;">46</td>
+    <td class="excel52">13.11.2017</td>
+    <td class="excel52">14.11.2017</td>
+    <td class="excel52">15.11.2017</td>
+    <td class="excel52">16.11.2017</td>
+    <td class="excel52">17.11.2017</td>
+    <td class="excel52">18.11.2017</td>
+    <td class="excel52">19.11.2017</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel54" style="height:15.0pt;">16</td>
+    <td class="excel53" style="border-left:none;">47</td>
+    <td class="excel51">20.11.2017</td>
+    <td class="excel51">21.11.2017</td>
+    <td class="excel51">22.11.2017</td>
+    <td class="excel51">23.11.2017</td>
+    <td class="excel51">24.11.2017</td>
+    <td class="excel51">25.11.2017</td>
+    <td class="excel51">26.11.2017</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel36" style="height:15.0pt;">16A</td>
+    <td class="excel34" style="border-left:none;">48</td>
+    <td class="excel50">27.11.2017</td>
+    <td class="excel50">28.11.2017</td>
+    <td class="excel50">29.11.2017</td>
+    <td class="excel50">30.11.2017</td>
+    <td class="excel50">01.12.2017</td>
+    <td class="excel50">02.12.2017</td>
+    <td class="excel50">03.12.2017</td>
+    <td rowspan="5" class="excel43" style="border-bottom:.5pt solid black;">Dezember</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel35" style="height:15.0pt;">16B</td>
+    <td class="excel26">49</td>
+    <td class="excel32">04.12.2017</td>
+    <td class="excel32">05.12.2017</td>
+    <td class="excel32">06.12.2017</td>
+    <td class="excel32">07.12.2017</td>
+    <td class="excel32">08.12.2017</td>
+    <td class="excel32">09.12.2017</td>
+    <td class="excel32">10.12.2017</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel24" style="height:15.0pt;">16C</td>
+    <td class="excel24" style="border-left:none;">50</td>
+    <td class="excel52">11.12.2017</td>
+    <td class="excel52">12.12.2017</td>
+    <td class="excel52">13.12.2017</td>
+    <td class="excel52">14.12.2017</td>
+    <td class="excel52">15.12.2017</td>
+    <td class="excel52">16.12.2017</td>
+    <td class="excel52">17.12.2017</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel53" style="height:15.0pt;">16</td>
+    <td class="excel53" style="border-left:none;">51</td>
+    <td class="excel51">18.12.2017</td>
+    <td class="excel51">19.12.2017</td>
+    <td class="excel51">20.12.2017</td>
+    <td class="excel51">21.12.2017</td>
+    <td class="excel51">22.12.2017</td>
+    <td class="excel51">23.12.2017</td>
+    <td class="excel51">24.12.2017</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel34" style="height:15.0pt;">16A</td>
+    <td class="excel34" style="border-left:none;">52</td>
+    <td class="excel50">25.12.2017</td>
+    <td class="excel50">26.12.2017</td>
+    <td class="excel50">27.12.2017</td>
+    <td class="excel50">28.12.2017</td>
+    <td class="excel50">29.12.2017</td>
+    <td class="excel50">30.12.2017</td>
+    <td class="excel50">31.12.2017</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel35" style="height:15.0pt;">16B</td>
+    <td class="excel26">1</td>
+    <td class="excel32">01.01.2018</td>
+    <td class="excel32">02.01.2018</td>
+    <td class="excel32">03.01.2018</td>
+    <td class="excel32">04.01.2018</td>
+    <td class="excel32">05.01.2018</td>
+    <td class="excel32">06.01.2018</td>
+    <td class="excel32">07.01.2018</td>
+    <td rowspan="4" class="excel37" style="border-top:none;">Januar</td>
+    <td rowspan="13" class="excel40" style="border-bottom:.5pt solid black;border-top:none;">2018</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel24" style="height:15.0pt;">16C</td>
+    <td class="excel24" style="border-left:none;">2</td>
+    <td class="excel52">08.01.2018</td>
+    <td class="excel52">09.01.2018</td>
+    <td class="excel52">10.01.2018</td>
+    <td class="excel52">11.01.2018</td>
+    <td class="excel52">12.01.2018</td>
+    <td class="excel52">13.01.2018</td>
+    <td class="excel52">14.01.2018</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel53" style="height:15.0pt;">16</td>
+    <td class="excel53" style="border-left:none;">3</td>
+    <td class="excel51">15.01.2018</td>
+    <td class="excel51">16.01.2018</td>
+    <td class="excel51">17.01.2018</td>
+    <td class="excel51">18.01.2018</td>
+    <td class="excel51">19.01.2018</td>
+    <td class="excel51">20.01.2018</td>
+    <td class="excel51">21.01.2018</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel34" style="height:15.0pt;">16A</td>
+    <td class="excel34" style="border-left:none;">4</td>
+    <td class="excel50">22.01.2018</td>
+    <td class="excel50">23.01.2018</td>
+    <td class="excel50">24.01.2018</td>
+    <td class="excel50">25.01.2018</td>
+    <td class="excel50">26.01.2018</td>
+    <td class="excel50">27.01.2018</td>
+    <td class="excel50">28.01.2018</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel35" style="height:15.0pt;">16B</td>
+    <td class="excel26">5</td>
+    <td class="excel32">29.01.2018</td>
+    <td class="excel32">30.01.2018</td>
+    <td class="excel32">31.01.2018</td>
+    <td class="excel32">01.02.2018</td>
+    <td class="excel32">02.02.2018</td>
+    <td class="excel32">03.02.2018</td>
+    <td class="excel32">04.02.2018</td>
+    <td rowspan="4" class="excel43">Februar</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel24" style="height:15.0pt;">16C</td>
+    <td class="excel24" style="border-left:none;">6</td>
+    <td class="excel52">05.02.2018</td>
+    <td class="excel52">06.02.2018</td>
+    <td class="excel52">07.02.2018</td>
+    <td class="excel52">08.02.2018</td>
+    <td class="excel52">09.02.2018</td>
+    <td class="excel52">10.02.2018</td>
+    <td class="excel52">11.02.2018</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel53" style="height:15.0pt;">16</td>
+    <td class="excel53" style="border-left:none;">7</td>
+    <td class="excel51">12.02.2018</td>
+    <td class="excel51">13.02.2018</td>
+    <td class="excel51">14.02.2018</td>
+    <td class="excel51">15.02.2018</td>
+    <td class="excel51">16.02.2018</td>
+    <td class="excel51">17.02.2018</td>
+    <td class="excel51">18.02.2018</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel34" style="height:15.0pt;">16A</td>
+    <td class="excel34" style="border-left:none;">8</td>
+    <td class="excel50">19.02.2018</td>
+    <td class="excel50">20.02.2018</td>
+    <td class="excel50">21.02.2018</td>
+    <td class="excel50">22.02.2018</td>
+    <td class="excel50">23.02.2018</td>
+    <td class="excel50">24.02.2018</td>
+    <td class="excel50">25.02.2018</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel35" style="height:15.0pt;">16B</td>
+    <td class="excel26">9</td>
+    <td class="excel32">26.02.2018</td>
+    <td class="excel32">27.02.2018</td>
+    <td class="excel32">28.02.2018</td>
+    <td class="excel32">01.03.2018</td>
+    <td class="excel32">02.03.2018</td>
+    <td class="excel32">03.03.2018</td>
+    <td class="excel32">04.03.2018</td>
+    <td rowspan="5" class="excel38" style="border-bottom:.5pt solid black;">März</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel24" style="height:15.0pt;">16C</td>
+    <td class="excel24" style="border-left:none;">10</td>
+    <td class="excel52">05.03.2018</td>
+    <td class="excel52">06.03.2018</td>
+    <td class="excel52">07.03.2018</td>
+    <td class="excel52">08.03.2018</td>
+    <td class="excel52">09.03.2018</td>
+    <td class="excel52">10.03.2018</td>
+    <td class="excel52">11.03.2018</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel33" style="height:15.0pt;">16</td>
+    <td class="excel53" style="border-left:none;">11</td>
+    <td class="excel51">12.03.2018</td>
+    <td class="excel51">13.03.2018</td>
+    <td class="excel51">14.03.2018</td>
+    <td class="excel51">15.03.2018</td>
+    <td class="excel51">16.03.2018</td>
+    <td class="excel51">17.03.2018</td>
+    <td class="excel51">18.03.2018</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel34" style="height:15.0pt;">16A</td>
+    <td class="excel34" style="border-left:none;">12</td>
+    <td class="excel50">19.03.2018</td>
+    <td class="excel50">20.03.2018</td>
+    <td class="excel50">21.03.2018</td>
+    <td class="excel50">22.03.2018</td>
+    <td class="excel50">23.03.2018</td>
+    <td class="excel50">24.03.2018</td>
+    <td class="excel50">25.03.2018</td>
+  </tr>
+  <tr style="height:15.0pt;">
+    <td class="excel35" style="height:15.0pt;">16B</td>
+    <td class="excel26">13</td>
+    <td class="excel32">26.03.2018</td>
+    <td class="excel32">27.03.2018</td>
+    <td class="excel32">28.03.2018</td>
+    <td class="excel32">29.03.2018</td>
+    <td class="excel32">30.03.2018</td>
+    <td class="excel32">31.03.2018</td>
+    <td class="excel32">01.04.2018</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+
+</body>
+</html>
+ 
